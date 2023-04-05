@@ -1,7 +1,8 @@
 version: "3.9"
 
 services:
-  web:
+  app:
+    container_name: todo_app
     build: ./app
     ports:
       - "8080:5000"
