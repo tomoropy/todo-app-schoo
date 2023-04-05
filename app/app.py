@@ -1,30 +1,36 @@
 from flask import Flask
-import mysql.connector
+import logging
+from flask_login import LoginManager
+
+from models import load_user, db
+from views import bp
 
 app = Flask(__name__)
 
-@app.route("/")
-def hello():
-    return "Hello World!"
+# データベースとの接続の設定を定義
+app.config['SQLALCHEMY_DATABASE_URI'] = \
+  'mysql+mysqlconnector://{user}:{password}@{host}/{db_name}?charset=utf8'.format(**{
+  'user': "user",
+  'password': "password",
+  'host': "db",
+  'db_name': "todo_app"
+  })
 
-@app.route("/db")
-def db_test():
-    conn = mysql.connector.connect(
-        host="db",
-        user="user",
-        password="password",
-        database="todo_app"
-    )
-    cursor = conn.cursor()
-    cursor.execute("SELECT 1")
-    result = cursor.fetchone()
-    cursor.close()
-    conn.close()
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = 'SECRET'
 
-    if result[0] == 1:
-        return "DBとの接続に成功しました"
-    else:
-        return "DBとの接続に問題が発生しました"
+db.init_app(app)
+
+logging.basicConfig(level=logging.DEBUG) 
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.user_loader(load_user)
+
+# ルーティングの設定
+app.register_blueprint(bp)
 
 if __name__ == "__main__":
+    with app.app_context():  
+        db.create_all()       
     app.run(host="0.0.0.0", debug=True)
