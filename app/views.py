@@ -111,3 +111,39 @@ def task_register():
         return redirect(url_for("root.home"))
 
 
+@bp.route("/task/update/<task_id>", methods=["GET", "POST"])
+@login_required
+def task_update(task_id):
+    task = Task.query.filter_by(id=task_id).first()
+
+    if request.method == "GET":
+        return render_template("task_update.html", task=task)
+    
+    if request.method == "POST":
+        title = request.form.get("title")
+        description = request.form.get("description")
+        endtime = request.form.get("endtime")
+
+        task = Task.query.filter_by(id=task_id).first()
+        task.title = title
+        task.description = description
+        task.endtime = endtime
+
+        db.session.commit()
+        return redirect(url_for("root.home"))
+
+
+@bp.route("/task/delete/<task_id>", methods=["GET"])
+@login_required
+def task_delete(task_id):
+    task = Task.query.filter_by(id=task_id).first()
+    db.session.delete(task)
+    db.session.commit()
+    return redirect(url_for("root.home"))
+
+
+@bp.route("/task/detail/<task_id>", methods=["GET"])
+@login_required
+def task_detail(task_id):
+    task = Task.query.filter_by(id=task_id).first()
+    return render_template("task_detail.html", task=task)
