@@ -11,7 +11,7 @@ def load_user(user_id):
 
 # Userテーブルの定義
 class User(UserMixin, db.Model):
-    tablename = 'users'
+    __tablename__ = 'users'
 
     # カラム定義
     id = db.Column(db.Integer, primary_key=True)
@@ -34,3 +34,21 @@ class User(UserMixin, db.Model):
     @classmethod
     def select_by_email(cls, email):
         return cls.query.filter_by(email=email).first()
+
+class Task(db.Model):
+    __tablename__ = 'tasks'
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(64), nullable=False)
+    description = db.Column(db.String(256))
+    endtime = db.Column(db.DateTime, nullable=False)
+    created_at = db.Column(db.DateTime, server_default=func.now(), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __init__(self, title, description, endtime, user_id):
+        self.title = title
+        self.description = description
+        self.endtime = endtime
+        self.user_id = user_id
+
+

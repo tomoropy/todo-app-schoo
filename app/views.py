@@ -1,9 +1,10 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, login_required, logout_user, current_user
 import mysql.connector
+from datetime import datetime
 
 # 自分で作ったファイルからインポート
-from models import User, db
+from models import User, Task, db
 
 bp = Blueprint("root", __name__, url_prefix="/")
 
@@ -30,7 +31,7 @@ def db_test():
 @bp.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == 'GET':
-        return render_template('register.html')
+        return render_template('user_register.html')
     
     if request.method == 'POST':
         # 書き込まれた項目formから取得する
@@ -73,6 +74,40 @@ def login():
 @bp.route("/", methods=["GET"])
 @login_required
 def home():
-    return render_template("home.html")
+    tasks = Task.query.filter_by(user_id=current_user.id).all()
+    return render_template("home.html", tasks=tasks)
+
+
+@bp.route("/logout", methods=["GET"])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("root.login"))
+
+
+@bp.route("/task/register", methods=["GET", "POST"])
+@login_required
+def task_register():
+    if request.method == "GET":
+        return render_template("task_register.html")
+    
+    if request.method == "POST":
+        title = request.form.get("title")
+        description = request.form.get("description")
+        endtime_str = request.form.get("endtime")
+
+        # 文字列をdatetimeオブジェクトに変換
+        endtime = datetime.strptime(endtime_str, "%Y-%m-%d")
+
+        task = Task(
+            title = title,
+            description = description,
+            endtime = endtime,
+            user_id = current_user.id
+        )
+
+        db.session.add(task)
+        db.session.commit()
+        return redirect(url_for("root.home"))
 
 
