@@ -51,7 +51,7 @@ def register():
             db.session.add(user)
             db.session.commit()
             return redirect(url_for('root.login'))
-    return render_template('register.html')
+    return render_template('user_register.html')
 
 
 @bp.route("/login", methods=["GET", "POST"])
