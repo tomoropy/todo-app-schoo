@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, login_required, logout_user, current_user
 import mysql.connector
 from datetime import datetime
@@ -82,6 +82,7 @@ def home():
 @login_required
 def logout():
     logout_user()
+    session.clear()
     return redirect(url_for("root.login"))
 
 
