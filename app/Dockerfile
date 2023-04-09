@@ -2,11 +2,10 @@ FROM python:3.9
 
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-
 COPY . .
+
+RUN pip install -r requirements.txt
 
 ENV FLASK_APP=app.py
 
-RUN chmod +x wait-for-it.sh
+CMD [ "python", "app.py" ]
