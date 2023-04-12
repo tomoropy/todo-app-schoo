@@ -22,19 +22,19 @@ Python を使って ToDo アプリを作って、基本的なアプリケーシ�
 $ git clone https://github.com/tomoropy/todo-app-schoo.git
 ```
 
-- 特定のブランチをクローンする方法
+特定のブランチをクローンする方法
 
 ```
 $ git clone -b [ブランチ名] https://github.com/tomoropy/todo-app-schoo.git
 ```
 
-- Docker-compose がない場合はダウンロード
+Docker-compose がない場合は事前にダウンロードしてください
 
 ```
 $ docker-compose up
 ```
 
-- Error になる場合
+Error になる場合(db を立ち上げたあとで、別ターミナルで app を立ち上げる)
 
 ```
 $ docker-compose up db
