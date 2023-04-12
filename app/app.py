@@ -26,6 +26,7 @@ logging.basicConfig(level=logging.DEBUG)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.user_loader(load_user)
+login_manager.login_view = "root.login"
 
 # ルーティングの設定
 app.register_blueprint(bp)
