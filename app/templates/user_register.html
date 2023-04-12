@@ -4,10 +4,9 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- tailwindCSSのUIを読み込む -->
     <link
-    href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
-    rel="stylesheet"
+      href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+      rel="stylesheet"
     />
     <title>登録</title>
   </head>
@@ -15,18 +14,15 @@
     <div class="min-h-screen flex items-center justify-center">
       <div class="bg-white p-10 rounded shadow-lg w-full md:w-1/3">
         <h1 class="text-2xl font-semibold mb-6">ユーザー登録</h1>
-        {% with messages = get_flashed_messages(with_categories=true) %} 
-        {% if messages %} 
-            {% for category, message in messages %}
-                <div
-                class="rounded bg-red-200 border-red-500 text-red-900 border-l-4 p-4 mb-4"
-                role="alert"
-                >
-                <p>{{ message }}</p>
-                </div>
-            {% endfor %} 
-        {% endif %} 
-        {% endwith %}
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %} {% for category, message in messages %}
+        <div
+          class="rounded bg-red-200 border-red-500 text-red-900 border-l-4 p-4 mb-4"
+          role="alert"
+        >
+          <p>{{ message }}</p>
+        </div>
+        {% endfor %} {% endif %} {% endwith %}
         <form action="{{ url_for('root.register') }}" method="post">
           <div class="mb-4">
             <label class="block mb-1 text-gray-700">ユーザー名</label>
@@ -63,7 +59,7 @@
               type="submit"
               class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold p-4 rounded-full"
             >
-             ユーザー登録 
+              ユーザー登録
             </button>
           </div>
         </form>
